@@ -7,9 +7,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/go-chi/chi"
+	_ "github.com/lib/pq"
+
 	"github.com/joho/godotenv"
-	"github.com/regmarmcem/stock-manager/controllers"
+	"github.com/regmarmcem/stock-manager/api"
 )
 
 var (
@@ -34,11 +35,7 @@ func main() {
 		return
 	}
 
-	fmt.Println(db)
-
-	r := chi.NewRouter()
-	r.MethodFunc(http.MethodGet, "/home", controllers.GetStock)
-
+	r := api.NewRouter(db)
 	log.Println("server start at port 8080")
 
 	log.Fatal(http.ListenAndServe("localhost:8080", r))
