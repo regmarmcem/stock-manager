@@ -13,6 +13,6 @@ func NewRouter(db *sql.DB) *chi.Mux {
 	r := chi.NewRouter()
 	ser := services.NewStockAppService(db)
 	tCon := controllers.NewStockController(ser)
-	r.MethodFunc(http.MethodGet, "/home", tCon.GetStock)
+	r.MethodFunc(http.MethodGet, "/stock/{id:[0-9]+}", tCon.GetStock)
 	return r
 }

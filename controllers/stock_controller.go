@@ -3,7 +3,9 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
+	"github.com/go-chi/chi"
 	"github.com/regmarmcem/stock-manager/models"
 	"github.com/regmarmcem/stock-manager/services"
 )
@@ -17,8 +19,13 @@ func NewStockController(s services.StockServicer) *StockController {
 }
 
 func (*StockController) GetStock(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		http.Error(w, "Path parameter must be a number", http.StatusBadRequest)
+		return
+	}
 	stock := &models.Stock{
-		ID:   1,
+		ID:   id,
 		Name: "stock1",
 	}
 	json.NewEncoder(w).Encode(stock)
