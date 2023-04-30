@@ -1,7 +1,23 @@
 package services
 
-import "github.com/regmarmcem/stock-manager/models"
+import (
+	"database/sql"
+	"errors"
+	"log"
 
-func (*StockAppService) GetStockService(stockID int) (models.Stock, error) {
-	return models.Stock{}, nil
+	"github.com/regmarmcem/stock-manager/models"
+	"github.com/regmarmcem/stock-manager/repositories"
+)
+
+func (s *StockAppService) GetStockService(stockID int) (models.Stock, error) {
+	var stock models.Stock
+	stock, err := repositories.SelectStocks(s.db, stockID)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			log.Println("Record not found")
+			return models.Stock{}, err
+		}
+		return models.Stock{}, err
+	}
+	return stock, nil
 }

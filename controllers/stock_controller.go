@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi"
-	"github.com/regmarmcem/stock-manager/models"
 	"github.com/regmarmcem/stock-manager/services"
 )
 
@@ -18,15 +17,17 @@ func NewStockController(s services.StockServicer) *StockController {
 	return &StockController{service: s}
 }
 
-func (*StockController) GetStock(w http.ResponseWriter, r *http.Request) {
+func (s *StockController) GetStock(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, "Path parameter must be a number", http.StatusBadRequest)
 		return
 	}
-	stock := &models.Stock{
-		ID:   id,
-		Name: "stock1",
+
+	stock, err := s.service.GetStockService(id)
+	if err != nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
 	}
 	json.NewEncoder(w).Encode(stock)
 }
