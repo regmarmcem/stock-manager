@@ -1,6 +1,6 @@
 package models
 
 type Stock struct {
-	ID   int    `json:"stock_id"`
-	Name string `json:"stock_name"`
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
