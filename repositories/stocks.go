@@ -16,7 +16,7 @@ func SelectStocks(db *sql.DB, stockID int) (models.Stock, error) {
 	row := db.QueryRow(sqlStr, stockID)
 	if err := row.Err(); err != nil {
 		log.Println("SelectStocks failed")
-		return models.Stock{}, nil
+		return models.Stock{}, err
 	}
 	var stock models.Stock
 	err := row.Scan(&stock.ID, &stock.Name)
