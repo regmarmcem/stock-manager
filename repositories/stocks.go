@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	"github.com/regmarmcem/stock-manager/models"
@@ -11,10 +12,11 @@ func SelectStocks(db *sql.DB, stockID int) (models.Stock, error) {
 	const sqlStr = `
 		select id, name
 		from stocks
-		wheree stock_id = ?;
+		where id = $1;
 	`
 	row := db.QueryRow(sqlStr, stockID)
 	if err := row.Err(); err != nil {
+		fmt.Println(err)
 		log.Println("SelectStocks failed")
 		return models.Stock{}, err
 	}
