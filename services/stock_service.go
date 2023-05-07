@@ -15,7 +15,7 @@ func (s *StockAppService) GetStockService(stockID int) (models.Stock, error) {
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			log.Println("Record not found")
-			return models.Stock{}, err
+			return models.Stock{}, nil
 		}
 		return models.Stock{}, err
 	}
