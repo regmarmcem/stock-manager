@@ -1,13 +1,24 @@
 services:
+  app:
+    build: .
+    depends_on: 
+    - postgres
+    volumes: 
+    - ./:/app
+    - .env:/app/.env
+    ports:
+      - "8080:8080"
+    tty: true
   postgres:
     image: postgres:latest
     container_name: postgres_container
     env_file:
       - .env
     volumes:
+      - ./sql/init:/docker-entrypoint-initdb.d
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - 127.0.0.1:5432:5432/tcp
+      - "5433:5432"
 
 volumes:
   postgres_data:

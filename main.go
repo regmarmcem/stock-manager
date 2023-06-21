@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	_ "github.com/lib/pq"
+	_ "github.com/jackc/pgx/v5/stdlib"
 
 	"github.com/joho/godotenv"
 	"github.com/regmarmcem/stock-manager/api"
@@ -20,21 +20,21 @@ func main() {
 	}
 	dbHost := os.Getenv("DB_HOSTNAME")
 	dbPort := os.Getenv("DB_PORT")
-	dbDatabase := os.Getenv("DB_NAME")
+	dbName := os.Getenv("DB_NAME")
 	dbUser := os.Getenv("DB_USER")
-	dbPassword := os.Getenv("DB_PASSWORD")
+	dbPass := os.Getenv("DB_PASSWORD")
 	// TODO: sslmode=disable
-	dbConn := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=disable", dbHost, dbPort, dbDatabase, dbUser, dbPassword)
+	databaseUrl := fmt.Sprintf("postgresql://%s:%s/%s?user=%s&password=%s&sslmode=disable", dbHost, dbPort, dbName, dbUser, dbPass)
 
-	db, err := sql.Open("postgres", dbConn)
+	db, err := sql.Open("pgx", databaseUrl)
 	if err != nil {
 		fmt.Printf("%v\n", err)
 		log.Println("fail to connect DB")
-		return
+		panic(err)
 	}
 
 	r := api.NewRouter(db)
 	log.Println("server start at port 8080")
 
-	log.Fatal(http.ListenAndServe("localhost:8080", r))
+	log.Panic(http.ListenAndServe(":8080", r))
 }
