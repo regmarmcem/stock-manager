@@ -10,7 +10,7 @@ services:
       - "8080:8080"
     tty: true
   postgres:
-    image: postgres:latest
+    image: postgres:15.3
     container_name: postgres_container
     env_file:
       - .env
