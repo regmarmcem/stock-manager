@@ -1,6 +1,7 @@
 services:
   app:
     build: .
+    container_name: stock_manager_container
     depends_on: 
     - postgres
     volumes: 
