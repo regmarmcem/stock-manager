@@ -1,5 +1,5 @@
 insert into stocks 
-  (name)
+  (name, description, image_id)
 values
-  ('よく消える消しゴム')
+  ('1.00mmM1ねじ', 'ミリ山ねじ 並目0.25', 'small_screw')
 ;

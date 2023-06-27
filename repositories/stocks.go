@@ -10,7 +10,7 @@ import (
 
 func SelectStocks(db *sql.DB, stockID int) (models.Stock, error) {
 	const sqlStr = `
-		select id, name
+		select id, name, description, image_id
 		from stocks
 		where id = $1;
 	`
@@ -21,7 +21,7 @@ func SelectStocks(db *sql.DB, stockID int) (models.Stock, error) {
 		return models.Stock{}, err
 	}
 	var stock models.Stock
-	err := row.Scan(&stock.ID, &stock.Name)
+	err := row.Scan(&stock.ID, &stock.Name, &stock.Description, &stock.ImageID)
 	if err != nil {
 		return models.Stock{}, err
 	}
